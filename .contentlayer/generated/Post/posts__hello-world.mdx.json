@@ -1,0 +1,24 @@
+{
+  "title": "Hello World",
+  "date": "2025-03-13T00:00:00.000Z",
+  "tags": [
+    "intro",
+    "blog"
+  ],
+  "featured": true,
+  "body": {
+    "raw": "\n# Hello World\n\nWelcome to my minimalist blog. This is a sample post to demonstrate the MDX capabilities.\n\n## Code Example\n\n```javascript\nfunction hello() {\n  console.log(\"Hello, world!\");\n}\n```\n\n## Custom Component Example\n\n<div className=\"p-4 bg-gray-100 rounded-md\">\n  This is a custom component rendered with JSX in MDX.\n</div>\n\n## Typography\n\nRegular paragraph text looks like this. **Bold text** and *italic text* are supported.\n\n> This is a blockquote. It's great for highlighting important information.\n\n- List item one\n- List item two\n- List item three\n\n1. Numbered item one\n2. Numbered item two\n3. Numbered item three\n\n---\n\nThat's it for this sample post! ",
+    "code": "var Component=(()=>{var a=Object.create;var o=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var u=Object.getPrototypeOf,g=Object.prototype.hasOwnProperty;var x=(t,e)=>()=>(e||t((e={exports:{}}).exports,e),e.exports),b=(t,e)=>{for(var i in e)o(t,i,{get:e[i],enumerable:!0})},c=(t,e,i,r)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let l of p(e))!g.call(t,l)&&l!==i&&o(t,l,{get:()=>e[l],enumerable:!(r=m(e,l))||r.enumerable});return t};var f=(t,e,i)=>(i=t!=null?a(u(t)):{},c(e||!t||!t.__esModule?o(i,\"default\",{value:t,enumerable:!0}):i,t)),j=t=>c(o({},\"__esModule\",{value:!0}),t);var s=x((D,h)=>{h.exports=_jsx_runtime});var y={};b(y,{default:()=>w,frontmatter:()=>_});var n=f(s()),_={title:\"Hello World\",date:new Date(1741824e6),tags:[\"intro\",\"blog\"],featured:!0};function d(t){let e=Object.assign({h1:\"h1\",p:\"p\",h2:\"h2\",pre:\"pre\",code:\"code\",strong:\"strong\",em:\"em\",blockquote:\"blockquote\",ul:\"ul\",li:\"li\",ol:\"ol\",hr:\"hr\"},t.components);return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{children:\"Hello World\"}),`\n`,(0,n.jsx)(e.p,{children:\"Welcome to my minimalist blog. This is a sample post to demonstrate the MDX capabilities.\"}),`\n`,(0,n.jsx)(e.h2,{children:\"Code Example\"}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-javascript\",children:`function hello() {\n  console.log(\"Hello, world!\");\n}\n`})}),`\n`,(0,n.jsx)(e.h2,{children:\"Custom Component Example\"}),`\n`,(0,n.jsx)(\"div\",{className:\"p-4 bg-gray-100 rounded-md\",children:(0,n.jsx)(e.p,{children:\"This is a custom component rendered with JSX in MDX.\"})}),`\n`,(0,n.jsx)(e.h2,{children:\"Typography\"}),`\n`,(0,n.jsxs)(e.p,{children:[\"Regular paragraph text looks like this. \",(0,n.jsx)(e.strong,{children:\"Bold text\"}),\" and \",(0,n.jsx)(e.em,{children:\"italic text\"}),\" are supported.\"]}),`\n`,(0,n.jsxs)(e.blockquote,{children:[`\n`,(0,n.jsx)(e.p,{children:\"This is a blockquote. It's great for highlighting important information.\"}),`\n`]}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"List item one\"}),`\n`,(0,n.jsx)(e.li,{children:\"List item two\"}),`\n`,(0,n.jsx)(e.li,{children:\"List item three\"}),`\n`]}),`\n`,(0,n.jsxs)(e.ol,{children:[`\n`,(0,n.jsx)(e.li,{children:\"Numbered item one\"}),`\n`,(0,n.jsx)(e.li,{children:\"Numbered item two\"}),`\n`,(0,n.jsx)(e.li,{children:\"Numbered item three\"}),`\n`]}),`\n`,(0,n.jsx)(e.hr,{}),`\n`,(0,n.jsx)(e.p,{children:\"That's it for this sample post!\"})]})}function k(t={}){let{wrapper:e}=t.components||{};return e?(0,n.jsx)(e,Object.assign({},t,{children:(0,n.jsx)(d,t)})):d(t)}var w=k;return j(y);})();\n;return Component;"
+  },
+  "_id": "posts/hello-world.mdx",
+  "_raw": {
+    "sourceFilePath": "posts/hello-world.mdx",
+    "sourceFileName": "hello-world.mdx",
+    "sourceFileDir": "posts",
+    "contentType": "mdx",
+    "flattenedPath": "posts/hello-world"
+  },
+  "type": "Post",
+  "url": "/posts/hello-world",
+  "formattedDate": "March 12, 2025"
+}
