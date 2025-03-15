@@ -11,6 +11,14 @@ export default function Home() {
 
   // Find the featured post (if any)
   const featuredPost = sortedPosts.find((post: Post) => post.featured);
+  
+  // Track displayed post IDs to prevent duplicates
+  const displayedPostIds = new Set<string>();
+  
+  // Add featured post to displayed posts if it exists
+  if (featuredPost) {
+    displayedPostIds.add(featuredPost._id);
+  }
 
   // Group posts by topic for better organization
   const aiPosts = sortedPosts.filter((post: Post) => 
@@ -18,6 +26,12 @@ export default function Home() {
       ['ai', 'artificial intelligence', 'machine learning', 'ml'].includes(tag.toLowerCase())
     )
   );
+  
+  // Get AI posts to display (limited to 3)
+  const aiPostsToDisplay = aiPosts.slice(0, 3);
+  
+  // Add AI posts to displayed posts
+  aiPostsToDisplay.forEach(post => displayedPostIds.add(post._id));
 
   // Function to create content for a single post
   const createPostContent = (post: Post) => `
@@ -46,11 +60,11 @@ ${post.body.raw}
         </section>
       )}
 
-      {aiPosts.length > 0 && (
+      {aiPostsToDisplay.length > 0 && (
         <section className="ai-posts-section">
           <h2 className="section-label">AI & Machine Learning</h2>
           <ul className="post-list">
-            {aiPosts.slice(0, 3).map((post: Post) => (
+            {aiPostsToDisplay.map((post: Post) => (
               <li key={post._id} className="post-item-with-copy">
                 <Link href={post.url} className="post-link">
                   <h3 className="post-title">
@@ -68,7 +82,9 @@ ${post.body.raw}
       <section className="all-posts-section">
         <h2 className="section-label">All Posts</h2>
         <ul className="post-list">
-          {sortedPosts.map((post: Post) => (
+          {sortedPosts
+            .filter((post: Post) => !displayedPostIds.has(post._id))
+            .map((post: Post) => (
             <li key={post._id} className="post-item-with-copy">
               <div className="post-content">
                 <Link href={post.url} className="post-link">
