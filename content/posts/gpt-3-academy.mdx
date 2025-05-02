@@ -1,0 +1,171 @@
+---
+title: Exploring the OpenAI GPT-3 API
+date: "2022-10-11"
+tags: ["AI", "OpenAI", "API", "Streamlit"]
+---
+
+## 0. Why This Guide Exists
+
+Everybody on campus keeps asking the same thing:  
+"Show me GPT-3 without the playground."  
+The completions endpoint is live, the docs are thin, and the possibilities feel endless. I built **GPT-3 Academy**—a single-file Streamlit app—to demo the engine and took notes along the way. This page is a distilled, hands-on guide so you can recreate (or remix) the magic yourself.
+
+---
+
+## 1. Sign Up and Grab Your Key
+
+1. Create an OpenAI account.  
+2. Open **View API Keys** in the dashboard.  
+3. Click **Create secret key** and copy it **once**.  
+4. Store it safely—environment variables keep the key out of source control.
+
+```bash
+export OPENAI_API_KEY="sk-…your-long-string…"
+```
+
+---
+
+## 2. Install the SDK
+
+```bash
+pip install openai==0.27.0      # current latest
+pip install streamlit
+```
+
+The `openai` client hides HTTP plumbing so you speak plain Python.
+
+---
+
+## 3. Hello Completion
+
+```python
+import openai, os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+resp = openai.Completion.create(
+    model="text-davinci-002",
+    prompt="Write a haiku about autumn",
+    max_tokens=32,
+    temperature=0.8
+)
+print(resp["choices"][0]["text"].strip())
+```
+
+### Key Parameters
+
+| field               | plain-English effect                              |
+| ------------------- | ------------------------------------------------- |
+| `model`             | Which brain (`text-davinci-002` tops the list)    |
+| `prompt`            | Everything the model sees before it starts typing |
+| `max_tokens`        | Hard ceiling on output length                     |
+| `temperature`       | 0 = laser-focused, 1 = let it riff                |
+| `top_p`             | Alternative to `temperature` for nucleus sampling |
+| `frequency_penalty` | Penalize token repetition                         |
+| `presence_penalty`  | Encourage the model to introduce new topics       |
+
+---
+
+## 4. Prompt Recipes to Try
+
+1. **Summaries**
+
+   ```
+   Summarize the following for a second-grade reader:
+   <your text>
+   ```
+2. **Outline generator**
+
+   ```
+   Make a bullet outline covering the key ideas:
+   <your text>
+   ```
+3. **Fact check**
+
+   ```
+   List factual claims in the text, rate their plausibility 1-5, and cite sources if possible.
+   ```
+4. **Quiz builder**
+
+   ```
+   Create five multiple-choice questions that test understanding of:
+   <topic>
+   ```
+
+---
+
+## 5. Keep the Bill Down
+
+```python
+@st.cache  # Streamlit memoizes identical calls
+def call_openai(prompt):
+    return openai.Completion.create(
+        model="text-davinci-002",
+        prompt=prompt,
+        max_tokens=256,
+        temperature=0.7
+    )["choices"][0]["text"]
+```
+
+Caching saves credits while you tweak the UI (and impress friends).
+
+---
+
+## 6. Wrap It in Streamlit
+
+```python
+import streamlit as st, openai, os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+st.set_page_config(layout="centered", page_title="GPT-3 Academy")
+st.header("GPT-3 Academy")
+
+text = st.text_area("Paste or write text")
+task = st.selectbox(
+    "Choose capability",
+    ("Summarize for a 2nd grader", "Make an outline",
+     "Fact Check", "Make a quiz")
+)
+
+if st.button("Run AI"):
+    if not text:
+        st.warning("Enter some text")
+    else:
+        prompt = f"{task}:\n{text[:1500]}"  # 1500-char guard
+        st.write(call_openai(prompt))
+```
+
+**Why Streamlit?**
+One file, instant widgets, no front-end hassle—perfect for quick demos.
+
+---
+
+## 7. What GPT-3 Does Well (October 2022 Snapshot)
+
+| capability       | real-world note                                                             |
+| ---------------- | --------------------------------------------------------------------------- |
+| Summarization    | Excellent on articles under \~2 k tokens                                    |
+| Light reasoning  | Good if you guide with clear chain-of-thought cues                          |
+| Creative writing | Poems, jokes, short fiction feel human-ish                                  |
+| Translation      | Strong for high-resource languages                                          |
+| Code snippets    | Short Python functions okay; long blocks need careful prompts               |
+| Factual recall   | Mixed accuracy—add "If unsure, say 'I don't know'" to reduce hallucinations |
+
+---
+
+## 8. Common Pitfalls
+
+* **Token limit**: prompt + completion must stay under 4096 tokens.
+* **High temperature**: entertaining but can spiral into nonsense.
+* **Missing newlines**: dense prompts sometimes yield run-on gibberish.
+* **Rate limits**: starter accounts sit at 60 requests per minute.
+
+---
+
+## 9. Next Steps
+
+1. Expose `temperature` and `max_tokens` as UI sliders.
+2. Log every prompt–response pair to SQLite for later study.
+3. Benchmark cheaper models (`curie`, `babbage`) against Davinci.
+4. Watch the changelog—rumor says a **chat-style** endpoint is brewing.
+
+---
