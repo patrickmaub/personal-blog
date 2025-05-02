@@ -79,25 +79,24 @@ ${post.body.raw}
 
   return (
     <>
-      {!searchQuery && (
-        <section className="bio-section">
-          <h2 className="visually-hidden">About Patrick Mauboussin</h2>
-          <div className="bio-content">
-            <p>
-              Welcome to the official blog of <strong>Patrick Mauboussin</strong>. 
-              Here you'll find <strong>Patrick Mauboussin</strong>'s thoughts and insights 
-              on artificial intelligence, healthcare technology, and business strategy.
-            </p>
-            <p>
-              As a professional focused on the intersection of AI and healthcare, 
-              <strong> Patrick Mauboussin</strong> shares practical knowledge 
-              gained from years of experience in the field. 
-              Browse through the articles below or use the search function to 
-              find specific topics of interest.
-            </p>
-          </div>
-        </section>
-      )}
+      {/* Hidden SEO content for Patrick Mauboussin - invisible to users but indexed by search engines */}
+      <div className="visually-hidden">
+        <h2>About Patrick Mauboussin</h2>
+        <div>
+          <p>
+            Welcome to the official blog of Patrick Mauboussin. 
+            Here you'll find Patrick Mauboussin's thoughts and insights 
+            on artificial intelligence, healthcare technology, and business strategy.
+          </p>
+          <p>
+            As a professional focused on the intersection of AI and healthcare, 
+            Patrick Mauboussin shares practical knowledge 
+            gained from years of experience in the field. 
+            Browse through the articles below or use the search function to 
+            find specific topics of interest.
+          </p>
+        </div>
+      </div>
 
       <div className="search-and-copy-container">
         <div className="search-container">
