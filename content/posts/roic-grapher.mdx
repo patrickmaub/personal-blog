@@ -1,0 +1,129 @@
+---
+title: "ROIC Chart Genie"
+date: "2022-11-29"
+tags: ["Finance", "Data Visualization", "Flask", "GPT-3"]
+---
+
+## What it does  
+
+ROIC Chart Genie lets you type *"Compare Apple's ROIC to Microsoft's debt-to-equity over the last ten years"* and get back a PNG chart—no tickers, no Excel, zero manual scraping.
+
+1. **GPT-3** reads your prompt and extracts one- or two-stock symbols.  
+2. A mini-crawler pulls 24 key financial metrics from **ROIC.ai** and saves each company to a CSV.  
+3. GPT writes the **Matplotlib** code needed to graph exactly what you asked.  
+4. The server executes the code headlessly, saves the plot, encodes it in base-64, and returns JSON (`prompt`, `image`, `code`).
+
+Everything runs behind a single Flask endpoint: `POST /prompt`.
+
+---
+
+## Pipeline at a glance
+
+```mermaid
+flowchart LR
+  U(User prompt) -->|GPT symbols| S[get_symbols()]
+  S --> CSV[request_stock() → CSV]
+  U -->|CSV list + prompt| G[get_graph()]
+  G --> C[execute_code()]
+  C --> IMG[.png → base64]
+  IMG --> R(Return JSON)
+```
+
+---
+
+## Key pieces
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Module / file</div>
+    <div className="table-cell">Job description</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><strong>get_symbols</strong> (GPT)</div>
+    <div className="table-cell">Pull comma-separated tickers from messy prose</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><strong>request_stock</strong></div>
+    <div className="table-cell">Scrape ROIC.ai → clean → DataFrame → <code>TICKER.csv</code></div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><strong>get_graph</strong> (GPT)</div>
+    <div className="table-cell">Inject file list + prompt into a code-completion template</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><strong>execute_code</strong></div>
+    <div className="table-cell">Run the generated Python, swap <code>plt.show()</code> for <code>plt.savefig()</code></div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><strong>Flask route</strong></div>
+    <div className="table-cell">Orchestrates flow, catches errors, sends <code>image</code> back to browser</div>
+  </div>
+</div>
+
+---
+
+## Try it locally
+
+```bash
+pip install flask flask-cors openai requests beautifulsoup4 lxml pandas matplotlib
+export OPEN_AI_KEY="sk-your-key"
+python app.py
+```
+
+Then:
+
+```bash
+curl -X POST http://localhost:5000/prompt \
+     -d "plot google vs amazon revenue per share 2010-2022"
+```
+
+The response JSON holds a Base-64 PNG ready for `<img src="data:image/png;base64, …">`.
+
+---
+
+## Tweak knobs
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Variable</div>
+    <div className="table-cell">Purpose</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><code>configs['stocks']</code></div>
+    <div className="table-cell">Prompt prefix that tells GPT how to spot tickers</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><code>categories</code></div>
+    <div className="table-cell">24 scraped metrics; trim to speed things up</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><code>max_tokens</code> in GPT calls</div>
+    <div className="table-cell">Trade creativity for cost / determinism</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell"><code>execute_code()</code></div>
+    <div className="table-cell">Swap Matplotlib backend or add seaborn styling</div>
+  </div>
+</div>
+
+---
+
+## Caveats
+
+* **Scraper fragility** – ROIC.ai class names may change without warning.
+* **GPT misfires** – Irrelevant words like "CAPEX" sometimes sneak in; we strip a few common offenders.
+* **Two-stock limit** – Code template handles one or two CSVs; extend it for baskets.
+* **Security** – Generated Python is executed with `exec`; sandbox before deploying in the wild.
+
+---
+
+## Next steps
+
+1. Cache scraped CSVs in Firestore to avoid repeat hits.
+2. Move generation to `gpt-3.5-turbo` for cheaper completions.
+3. Add a `GET /image/<id>` endpoint for CDN-friendly serving.
+4. Let GPT select chart types: bars for margins, lines for EPS, etc.
+
+---
+
+Paste a question, get a chart—no finance terminal required.
