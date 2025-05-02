@@ -1,0 +1,62 @@
+---
+title: "Recursive Summarizer"
+date: "2023-09-14"
+tags: ["AI", "Tools", "Python", "PDF"]
+---
+
+## What it does
+
+Recursive Summarizer turns any PDF into a tight recap.  
+It extracts every page, slices the text into 3-page chunks, asks GPT-3.5-turbo to summarize each slice, stitches the mini-summaries together, and keeps compressing until the final text fits your target length.
+
+## Quick facts
+
+- Python script, one dependency stack (`pdfplumber`, `openai`)
+- Works on scans or born-digital PDFs (OCR quality affects output)
+- Defaults: ~3 200-character chunks, 10-page final cap
+- Saves both an intermediate dump and a final `summary.txt`
+
+## How it works
+
+1. **Extract**  
+   `pdf_to_text` walks every page with `pdfplumber` and returns raw text.
+
+2. **Chunk**  
+   `split_text` splits the corpus into ~3-page slices so the model stays within context.
+
+3. **Summarize**  
+   `get_summary` calls `ChatCompletion` once per slice, writes an intermediate file, and returns the snippet.
+
+4. **Re-curse**  
+   If the stitched output is still too long, the script passes it back to GPT for a tighter pass until it fits.
+
+5. **Persist**  
+   The final summary lands in `summary.txt`.
+
+```python
+# one-liner demo
+python recursive_summarizer.py --pdf ~/Docs/whitepaper.pdf
+```
+
+## Tune it
+
+| Variable          | What it controls                                               |
+| ----------------- | -------------------------------------------------------------- |
+| max_page_length   | Rough characters per PDF page                                  |
+| chunk_length      | Characters sent to GPT in one go (max_page_length * 3 by default) |
+| target_length     | Max size of the final summary                                  |
+
+Adjust these three numbers to balance cost, speed, and detail.
+
+## Caveats
+
+- Output quality hinges on the PDF's text layer; bad scans in → garbled text out.
+- Hard limits can trim nuance if you aim for ultra-short summaries.
+- Each GPT call costs tokens; monster PDFs may run up your bill.
+
+## Get it
+
+Source and MIT license live here:
+https://github.com/patrickmaub/recursive-summarizer
+
+Clone, add your OPENAI_API_KEY, point at a PDF, and watch it shrink.

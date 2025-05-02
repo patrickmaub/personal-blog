@@ -4,5 +4,6 @@ import posts__functionCallingMdx from './posts__function-calling.mdx.json' asser
 import posts__gpt_3AcademyMdx from './posts__gpt-3-academy.mdx.json' assert { type: 'json' }
 import posts__gpt_3Mdx from './posts__gpt-3.mdx.json' assert { type: 'json' }
 import posts__isPerfectJusticeAchievableMdx from './posts__is-perfect-justice-achievable.mdx.json' assert { type: 'json' }
+import posts__recursiveSummarizerMdx from './posts__recursive-summarizer.mdx.json' assert { type: 'json' }
 
-export const allPosts = [posts__functionCallingMdx, posts__gpt_3AcademyMdx, posts__gpt_3Mdx, posts__isPerfectJusticeAchievableMdx]
+export const allPosts = [posts__functionCallingMdx, posts__gpt_3AcademyMdx, posts__gpt_3Mdx, posts__isPerfectJusticeAchievableMdx, posts__recursiveSummarizerMdx]
