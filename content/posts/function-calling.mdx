@@ -4,23 +4,23 @@ date: "2023-11-30"
 tags: ["AI", "OpenAI", "Function Calling"]
 ---
 
-> GPT models excel at tight, coherent answers—  
-> coaxing them into 10-plus pages is another story.  
-> Here's how function calling turns the *"model clipped my reply"* headache into a 12 k-token flex.
+> GPT models excel at tight, coherent answers,  
+> but coaxing them into 10-plus pages is another story.  
+> Here's how function calling turns the *"model clipped my reply"* headache into a 12k-token solution.
 
 ## The Token-Truncation Dilemma
 
 Anyone who uses ChatGPT or the raw API knows the pain: ask for a novel-length response and the model **cuts off** or **gives up**.  
 Two forces drive this:
 
-1. **Labeler overhead** — RLHF reviewers score shorter outputs faster.  
-2. **Compute cost** — longer generations burn more GPU and cash.
+1. **Labeler overhead**: RLHF reviewers score shorter outputs faster.  
+2. **Compute cost**: longer generations burn more GPU and cash.
 
-Even with an 8,192-token limit on GPT-4 (or 16 k on GPT-3.5-Turbo-16k), the model rarely fills the tank. We need a nudge.
+Even with an 8,192-token limit on GPT-4 (or 16k on GPT-3.5-Turbo-16k), the model rarely fills the tank. We need a nudge.
 
 ## The Function-Calling Epiphany
 
-Function calling shipped mid-2023 as a *structured output* feature—great for JSON, fantastic for **forcing completeness**:
+Function calling shipped mid-2023 as a *structured output* feature. It's great for JSON and fantastic for **forcing completeness**:
 
 * The model **must** populate every parameter.  
 * It tries even when the parameter list stretches into the hundreds.
@@ -34,7 +34,7 @@ Model → 🤖: "Challenge accepted."
 
 ## Dynamic Parameter Generation
 
-Hand-writing 100 + parameters is a slog. Automate it:
+Hand-writing 100+ parameters is a slog. Automate it:
 
 ```python
 def generate_function_definition(entities, attributes, name, description):
@@ -62,7 +62,7 @@ def generate_function_definition(entities, attributes, name, description):
 `entities = ["Chapter 1", …, "Chapter 20"]`
 `attributes = ["Main Characters", "Setting", "Conflict", …]`
 
-Result → 100 + required keys; the model churns until the context window is empty.
+Result → 100+ required keys; the model churns until the context window is empty.
 
 ## Empirical Validation
 
@@ -75,34 +75,34 @@ Result → 100 + required keys; the model churns until the context window is emp
   <div className="table-row">
     <div className="table-cell">gpt-3.5-turbo-16k</div>
     <div className="table-cell"><strong>Function call</strong></div>
-    <div className="table-cell"><strong>12 608</strong></div>
+    <div className="table-cell"><strong>12,608</strong></div>
   </div>
   <div className="table-row">
     <div className="table-cell">gpt-3.5-turbo-16k</div>
     <div className="table-cell">Plain text prompt</div>
-    <div className="table-cell">1 533</div>
+    <div className="table-cell">1,533</div>
   </div>
 </div>
 
-Across multiple tests—API method docs, 25-character novel bibles, multi-city travel guides—the pattern held: **function calls push the model to its maximum**.
+Across multiple tests (API method docs, 25-character novel bibles, multi-city travel guides), the pattern held: **function calls push the model to its maximum**.
 
 ## Why This Matters
 
-* **Cost-efficient** — one big call beats dozens of batched 2 k-token calls.
-* **Creative freedom** — full chapters, detailed class diagrams, expansive lore dumps.
-* **Reusable pattern** — generate the parameter list itself with GPT-4 and customize per project.
+* **Cost-efficient**: one big call beats dozens of batched 2k-token calls.
+* **Creative freedom**: full chapters, detailed class diagrams, expansive lore dumps.
+* **Reusable pattern**: generate the parameter list itself with GPT-4 and customize per project.
 
 ## Future Exploration
 
 1. Fine-tune parameter granularity for style control.
 2. Combine with streaming to display content as it lands.
-3. Test on upcoming 128 k-context models for quasi-book outputs.
+3. Test on upcoming 128k-context models for quasi-book outputs.
 
 ## Conclusion
 
 Function calling turns *"please finish your thought"* into *"please stop, you're overflowing my editor."*
 Grab the open-source repo, try the generator, and bend those tokens to your will.
 
-*Note: results above achieved with **gpt-3.5-turbo-16k**. Your mileage may vary with newer context windows—but the trick still holds.*
+*Note: results above achieved with **gpt-3.5-turbo-16k**. Your mileage may vary with newer context windows, but the trick still holds.*
 
 ---
