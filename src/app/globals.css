@@ -425,3 +425,24 @@ a:hover {
   }
 }
 
+/* Copy all button styles */
+.copy-all-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.copy-all-container .copy-button {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.copy-all-container .copy-button:hover {
+  background-color: #e5e7eb;
+}
+

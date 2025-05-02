@@ -43,8 +43,21 @@ URL: https://patrick.mauboussin.me${post.url}
 ${post.body.raw}
   `;
 
+  // Function to create content for all posts
+  const createAllPostsContent = () => {
+    return sortedPosts.map(post => createPostContent(post)).join('\n\n---\n\n');
+  };
+
   return (
     <>
+      <div className="copy-all-container">
+        <CopyButton 
+          text={createAllPostsContent()} 
+          label="Copy All Posts" 
+          tooltip="Copy content from all posts for AI tools" 
+        />
+      </div>
+
       {featuredPost && (
         <section className="featured-section">
           <h2 className="section-label">Featured Post</h2>
