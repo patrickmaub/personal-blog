@@ -11,28 +11,47 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Patrick Mauboussin | AI, Healthcare, Business",
-  description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
-  keywords: ["Patrick Mauboussin", "AI", "Artificial Intelligence", "Machine Learning", "Software Engineering", "Tech Blog"],
-  authors: [{ name: "Patrick Mauboussin" }],
+  title: "Patrick Mauboussin | Personal Blog on AI, Healthcare & Business",
+  description: "Official personal blog of Patrick Mauboussin. Sharing insights on artificial intelligence, healthcare technology, machine learning, and business strategy.",
+  keywords: ["Patrick Mauboussin", "Patrick J. Mauboussin", "AI", "Artificial Intelligence", "Healthcare Technology", "Machine Learning", "Software Engineering", "Business Strategy"],
+  authors: [{ name: "Patrick Mauboussin", url: "https://patrick.mauboussin.me" }],
+  creator: "Patrick Mauboussin",
+  publisher: "Patrick Mauboussin",
   openGraph: {
-    title: "Patrick Mauboussin | AI, Healthcare, Business",
-    description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
+    title: "Patrick Mauboussin | Personal Blog on AI, Healthcare & Business",
+    description: "Official personal blog of Patrick Mauboussin. Sharing insights on artificial intelligence, healthcare technology, machine learning, and business strategy.",
     url: "https://patrick.mauboussin.me",
     siteName: "Patrick Mauboussin Blog",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Patrick Mauboussin Blog"
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patrick Mauboussin | AI, Healthcare, Business",
-    description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
-    creator: "@patrickmauboussin",
+    title: "Patrick Mauboussin | Personal Blog on AI, Healthcare & Business",
+    description: "Official personal blog of Patrick Mauboussin. Sharing insights on artificial intelligence, healthcare technology, machine learning, and business strategy.",
+    creator: "@pjmauboussin",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
+  alternates: {
+    canonical: "https://patrick.mauboussin.me",
+  },
+  metadataBase: new URL("https://patrick.mauboussin.me"),
 };
 
 export default function RootLayout({
@@ -95,15 +114,19 @@ export default function RootLayout({
             {
               "@context": "https://schema.org",
               "@type": "Person",
+              "@id": "https://patrick.mauboussin.me/#person",
               "name": "Patrick Mauboussin",
+              "givenName": "Patrick",
+              "familyName": "Mauboussin",
               "url": "https://patrick.mauboussin.me",
-              "jobTitle": "Healthcare, AI, Business",
+              "jobTitle": "AI and Healthcare Professional",
+              "description": "Patrick Mauboussin writes about artificial intelligence, healthcare technology, and business strategy.",
               "sameAs": [
-                "https://linkedin.com/in/patrickmauboussin",
-                "https://twitter.com/patrickmauboussin",
+                "https://www.linkedin.com/in/patrick-mauboussin-254118190/",
+                "https://x.com/pjmauboussin",
                 "https://github.com/patrickmaub"
               ],
-              "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Software Engineering"]
+              "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Healthcare Technology", "Business Strategy", "Software Engineering"]
             }
           `}
         </Script>
@@ -112,12 +135,42 @@ export default function RootLayout({
             {
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": "https://patrick.mauboussin.me/#website",
               "url": "https://patrick.mauboussin.me",
-              "name": "Patrick Mauboussin | Healthcare, AI, Business",
-              "description": "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
+              "name": "Patrick Mauboussin | Personal Blog",
+              "description": "Official personal blog of Patrick Mauboussin, sharing insights on artificial intelligence, healthcare technology, and business strategy.",
+              "inLanguage": "en-US",
               "author": {
                 "@type": "Person",
+                "@id": "https://patrick.mauboussin.me/#person",
                 "name": "Patrick Mauboussin"
+              },
+              "publisher": {
+                "@type": "Person",
+                "@id": "https://patrick.mauboussin.me/#person"
+              }
+            }
+          `}
+        </Script>
+        <Script id="schema-blog" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Blog",
+              "@id": "https://patrick.mauboussin.me/#blog",
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://patrick.mauboussin.me"
+              },
+              "headline": "Patrick Mauboussin's Personal Blog",
+              "description": "Insights on artificial intelligence, healthcare technology, and business strategy from Patrick Mauboussin.",
+              "publisher": {
+                "@type": "Person",
+                "@id": "https://patrick.mauboussin.me/#person"
+              },
+              "author": {
+                "@type": "Person",
+                "@id": "https://patrick.mauboussin.me/#person"
               }
             }
           `}

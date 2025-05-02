@@ -261,6 +261,29 @@ a:hover {
   color: #666;
 }
 
+/* Content link styling */
+.prose a {
+  color: #2563eb; /* Nice blue color */
+  text-decoration: none;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.prose a:hover {
+  color: #1d4ed8; /* Slightly darker blue on hover */
+  border-bottom-color: rgba(29, 78, 216, 0.4);
+}
+
+/* Preserve original styling for navigation links */
+.header a, .footer a, .post-list a, .back-link {
+  color: inherit;
+  border-bottom: none;
+}
+
+.header a:hover, .footer a:hover, .post-list a:hover {
+  color: #666;
+}
+
 /* Prose styles */
 .prose {
   max-width: none;
@@ -328,6 +351,32 @@ a:hover {
 .prose li {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+/* Bio section styles */
+.bio-section {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.bio-content {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.bio-content p {
+  margin-bottom: 1rem;
+}
+
+.bio-content p:last-child {
+  margin-bottom: 0;
+}
+
+.bio-content strong {
+  color: #111;
+  font-weight: 500;
 }
 
 /* Media queries for responsive design */
