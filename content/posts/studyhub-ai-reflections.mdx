@@ -1,0 +1,144 @@
+---
+title: "Learnings from Studyhub.ai"
+date: "2023-04-25"
+tags: ["AI", "Startup", "SaaS", "Education"]
+---
+
+## TL;DR
+
+We built an AI study assistant that:
+
+- **Watched Firestore** for new chat docs  
+- Spun up **multiprocess "agents"** to handle each request  
+- Mixed GPT-4 (8k context) with live web search and file uploads  
+- Let the model plan its own next steps, then let the user approve or edit
+
+We hit **1,200 users** and **≈ $500 MRR** before pausing the project.  
+Here's what worked, what didn't, and where the opportunity still sits.
+
+---
+
+## 1. How the engine worked
+
+The system followed a multi-step process:
+
+1. **User input**: User enters a question or uploads a PDF
+2. **Document creation**: Creates a Firestore document with "pending" status
+3. **Process activation**: A listener detects the document and spawns a dedicated process
+4. **Planning phase**: The system parses the input and creates a step-by-step plan
+5. **Execution phase**: Performs research, coding, writing, or calculations as needed
+6. **Status updates**: Updates the document as each step completes
+7. **Continuation or completion**: Either returns to planning for more steps or marks as complete
+
+### Highlights
+
+* **Agentic loop**: every step produced a fresh instruction list; users could pick the next move or inject their own.
+* **File and URL support**: PDF summarizer + Google Custom Search + relevance filter. We were first to market with PDF uploads in a chat interface, months before ChatGPT added this feature.
+* **Cheap workers**: GPT-3.5 for heavy lifting, GPT-4 only when precision mattered.
+* **Process fences**: each doc got its own Python process with a `stop_event` so "stop" and "resume" felt instant.
+
+### Pain points
+
+1. **Context cost** – an 8k GPT-4 call was ≈ $0.90. One multi-step session could torch several dollars.
+2. **Over-engineering** – dependency graphs, live logging to Firestore, AutoGPT-style recursion… fun, but 80% of users just wanted fast summaries.
+3. **Ops overhead** – scraping, Chrome-less requests, DALLE images, embedding batches—lots of moving parts, lots of 5× cost spikes when something looped.
+
+---
+
+## 2. Metrics that mattered
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Metric</div>
+    <div className="table-cell">Peak value</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Active users</div>
+    <div className="table-cell">1,200</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Monthly revenue</div>
+    <div className="table-cell">$500</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Average GPT tokens / chat</div>
+    <div className="table-cell">46k</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Infra spend</div>
+    <div className="table-cell">$310 / mo</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Churn trigger</div>
+    <div className="table-cell">Slow answers + random 429s</div>
+  </div>
+</div>
+
+We could have doubled revenue by halving cost, but the complexity curve was steeper than the growth curve.
+
+---
+
+## 3. Entrepreneurial lessons
+
+1. **Ship the core loop first**
+   Students wanted *"upload PDF → get outline"*. We delivered that in week one but spent month two on fancy agent orchestration that only power users touched.
+
+2. **Watch unit economics early**
+   Token fees scale linearly; your price tier probably doesn't. Lock the LTV / COGS ratio before you fall in love with a feature.
+
+3. **Kill features fast**
+   DALLE illustrations were fun demos, but less than 3% of chats used them. We should have axed the call entirely instead of patching image-handler bugs.
+
+4. **Cheap > smart (for now)**
+   Even a less capable model becomes magical when the per-token price drops by 10×. A future sub-cent GPT means:
+
+   * Whole-textbook embeddings
+   * Real-time code tutors
+   * Personal "AutoGPT" agents that iterate all night for pennies
+
+---
+
+## 4. What I'd do next time
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Step</div>
+    <div className="table-cell">Old way</div>
+    <div className="table-cell">Next time</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Planning</div>
+    <div className="table-cell">Multi-agent recursion</div>
+    <div className="table-cell">Simple checklist + "Regenerate" button</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Context cut-down</div>
+    <div className="table-cell">Full transcripts in every call</div>
+    <div className="table-cell">Sliding-window + summary memory</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">User control</div>
+    <div className="table-cell">Firestore status toggles</div>
+    <div className="table-cell">Inline UI ("retry", "expand", "draft")</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Infrastructure</div>
+    <div className="table-cell">DIY GCP + forked processes</div>
+    <div className="table-cell">Serverless functions per task</div>
+  </div>
+</div>
+
+---
+
+## 5. Final word
+
+Studyhub.ai paused, not failed. The market is still wide open and GPT prices keep falling. When a ten-page GPT-4 answer costs less than a penny, someone will nail the friction-free study coach. 
+
+One of the toughest realizations was the lack of defensibility in the AI app space. We pioneered file uploads and document Q&A months before ChatGPT released the same feature. When they launched it overnight, our key differentiator vanished. This pattern repeated across the ecosystem—build something innovative today, see it as a free feature in ChatGPT tomorrow.
+
+Next time I'll resist the temptation to build everything **because we can** and laser in on what users actually pay for, with a focus on proprietary data, workflows, or integrations that create more durable moats.
+
+**Keep it lean, watch the meter, and ship the magic.**
+
+```
+```

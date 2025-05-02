@@ -427,9 +427,9 @@ a:hover {
 
 /* Copy all button styles */
 .copy-all-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
 }
 
 .copy-all-container .copy-button {
@@ -440,10 +440,84 @@ a:hover {
   color: #6b7280;
   transition: color 0.2s ease;
   border-bottom: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .copy-all-container .copy-button:hover {
   color: #111;
   border-bottom-color: #111;
+}
+
+/* Search styles */
+.search-and-copy-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6b7280;
+}
+
+.search-clear-button {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.search-clear-button:hover {
+  color: #6b7280;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  border: 1px dashed #e5e7eb;
+  border-radius: 0.375rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .search-and-copy-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .search-container {
+    max-width: none;
+  }
+  
+  .copy-all-container {
+    margin-left: 0;
+    align-self: flex-end;
+  }
 }
 
