@@ -11,12 +11,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Patrick Mauboussin | AI Engineer & Tech Blog",
+  title: "Patrick Mauboussin | AI, Healthcare, Business",
   description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
   keywords: ["Patrick Mauboussin", "AI", "Artificial Intelligence", "Machine Learning", "Software Engineering", "Tech Blog"],
   authors: [{ name: "Patrick Mauboussin" }],
   openGraph: {
-    title: "Patrick Mauboussin | AI Engineer & Tech Blog",
+    title: "Patrick Mauboussin | AI, Healthcare, Business",
     description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
     url: "https://patrick.mauboussin.me",
     siteName: "Patrick Mauboussin Blog",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patrick Mauboussin | AI Engineer & Tech Blog",
+    title: "Patrick Mauboussin | AI, Healthcare, Business",
     description: "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
     creator: "@patrickmauboussin",
   },
@@ -53,7 +53,7 @@ export default function RootLayout({
                 Patrick Mauboussin
               </a>
             </h1>
-            <p className="site-description">AI Engineer & Tech Enthusiast</p>
+            <p className="site-description">AI, Healthcare, Business</p>
           </header>
           <main className="main">{children}</main>
           <footer className="footer">
@@ -97,7 +97,7 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Patrick Mauboussin",
               "url": "https://patrick.mauboussin.me",
-              "jobTitle": "AI Engineer",
+              "jobTitle": "Healthcare, AI, Business",
               "sameAs": [
                 "https://linkedin.com/in/patrickmauboussin",
                 "https://twitter.com/patrickmauboussin",
@@ -113,7 +113,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "url": "https://patrick.mauboussin.me",
-              "name": "Patrick Mauboussin | AI Engineer & Tech Blog",
+              "name": "Patrick Mauboussin | Healthcare, AI, Business",
               "description": "Personal blog by Patrick Mauboussin, sharing insights on artificial intelligence, machine learning, and software engineering.",
               "author": {
                 "@type": "Person",

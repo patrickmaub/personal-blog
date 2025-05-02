@@ -20,8 +20,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  // Access slug directly without awaiting
+  const slug = params.slug;
+  
   const post = allPosts.find(
-    (post: Post) => post._raw.flattenedPath.replace('posts/', '') === params.slug
+    (post: Post) => post._raw.flattenedPath.replace('posts/', '') === slug
   );
 
   if (!post) {
@@ -53,9 +56,12 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   };
 }
 
-export default function PostPage({ params }: PostPageProps) {
+export default async function PostPage({ params }: PostPageProps) {
+  // Access slug directly without awaiting
+  const slug = params.slug;
+  
   const post = allPosts.find(
-    (post: Post) => post._raw.flattenedPath.replace('posts/', '') === params.slug
+    (post: Post) => post._raw.flattenedPath.replace('posts/', '') === slug
   );
 
   if (!post) {
@@ -83,7 +89,7 @@ ${post.body.raw}
             <Link href="/" className="back-link">
               ← Back to home
             </Link>
-            <CopyButton text={postContent} label="Copy for AI" />
+            <CopyButton text={postContent} label="Copy" />
           </div>
           <h1 className="post-title">{post.title}</h1>
           <p className="post-date">{post.formattedDate}</p>

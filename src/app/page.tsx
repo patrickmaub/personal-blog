@@ -55,7 +55,7 @@ ${post.body.raw}
               </h3>
               <p className="post-date">{featuredPost.formattedDate}</p>
             </Link>
-            <CopyButton text={createPostContent(featuredPost)} label="Copy for AI" tooltip="Copy the full article to paste into AI" />
+            <CopyButton text={createPostContent(featuredPost)} label="Copy" tooltip="Copy the full article to paste into AI" />
           </div>
         </section>
       )}
@@ -72,7 +72,7 @@ ${post.body.raw}
                   </h3>
                   <p className="post-date">{post.formattedDate}</p>
                 </Link>
-                <CopyButton text={createPostContent(post)} label="Copy for AI" tooltip="Copy the full article to paste into AI" />
+                <CopyButton text={createPostContent(post)} label="Copy" tooltip="Copy the full article to paste into AI" />
               </li>
             ))}
           </ul>
@@ -103,7 +103,7 @@ ${post.body.raw}
                   )}
                 </Link>
               </div>
-              <CopyButton text={createPostContent(post)} label="Copy for AI" tooltip="Copy the full article to paste into AI" />
+              <CopyButton text={createPostContent(post)} label="Copy" tooltip="Copy the full article to paste into AI" />
             </li>
           ))}
         </ul>
