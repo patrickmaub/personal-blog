@@ -84,6 +84,15 @@ ${post.body.raw}
                     {post.title}
                   </h3>
                   <p className="post-date">{post.formattedDate}</p>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="post-tags-small">
+                      {post.tags.map((tag: string) => (
+                        <span key={tag} className="post-tag-small">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </Link>
                 <CopyButton text={createPostContent(post)} label="Copy" tooltip="Copy the full article to paste into AI" />
               </li>
