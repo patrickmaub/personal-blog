@@ -1,5 +1,5 @@
 ---
-title: "Learnings from Studyhub.ai"
+title: "Learnings from Studyhub.ai: My First Revenue-Generating App"
 date: "2023-04-25"
 tags: ["AI", "Startup", "SaaS", "Education"]
 ---
@@ -13,7 +13,7 @@ We built an AI study assistant that:
 - Mixed GPT-4 (8k context) with live web search and file uploads  
 - Let the model plan its own next steps, then let the user approve or edit
 
-We hit **1,200 users** and **≈ $500 MRR** before pausing the project.  
+We hit **1,200 users** and **about $500 MRR** before pausing the project.  
 Here's what worked, what didn't, and where the opportunity still sits.
 
 ---
@@ -39,9 +39,9 @@ The system followed a multi-step process:
 
 ### Pain points
 
-1. **Context cost** – an 8k GPT-4 call was ≈ $0.90. One multi-step session could torch several dollars.
-2. **Over-engineering** – dependency graphs, live logging to Firestore, AutoGPT-style recursion… fun, but 80% of users just wanted fast summaries.
-3. **Ops overhead** – scraping, Chrome-less requests, DALLE images, embedding batches—lots of moving parts, lots of 5× cost spikes when something looped.
+1. **Context cost**: an 8k GPT-4 call was around $0.90. One multi-step session could torch several dollars.
+2. **Over-engineering**: dependency graphs, live logging to Firestore, AutoGPT-style recursion... fun, but 80% of users just wanted fast summaries.
+3. **Ops overhead**: scraping, Chrome-less requests, DALLE images, embedding batches: lots of moving parts, lots of 5× cost spikes when something looped.
 
 ---
 
@@ -81,7 +81,7 @@ We could have doubled revenue by halving cost, but the complexity curve was stee
 ## 3. Entrepreneurial lessons
 
 1. **Ship the core loop first**
-   Students wanted *"upload PDF → get outline"*. We delivered that in week one but spent month two on fancy agent orchestration that only power users touched.
+   Students wanted *"upload PDF -> get outline"*. We delivered that in week one but spent month two on fancy agent orchestration that only power users touched.
 
 2. **Watch unit economics early**
    Token fees scale linearly; your price tier probably doesn't. Lock the LTV / COGS ratio before you fall in love with a feature.
@@ -134,11 +134,10 @@ We could have doubled revenue by halving cost, but the complexity curve was stee
 
 Studyhub.ai paused, not failed. The market is still wide open and GPT prices keep falling. When a ten-page GPT-4 answer costs less than a penny, someone will nail the friction-free study coach. 
 
-One of the toughest realizations was the lack of defensibility in the AI app space. We pioneered file uploads and document Q&A months before ChatGPT released the same feature. When they launched it overnight, our key differentiator vanished. This pattern repeated across the ecosystem—build something innovative today, see it as a free feature in ChatGPT tomorrow.
+One of the toughest realizations was the lack of defensibility in the AI app space. We pioneered file uploads and document Q&A months before ChatGPT released the same feature. When they launched it overnight, our key differentiator vanished. This pattern repeated across the ecosystem: build something innovative today, see it as a free feature in ChatGPT tomorrow.
+
+The final blow came when OpenAI released custom GPTs, allowing anyone to create specialized assistants with minimal technical knowledge. Our sophisticated agent infrastructure, which took months to build, could now be approximated by a GPT with a simple custom prompt and a few PDF uploads. What had been our technical moat became a configuration option in a user-friendly interface.
 
 Next time I'll resist the temptation to build everything **because we can** and laser in on what users actually pay for, with a focus on proprietary data, workflows, or integrations that create more durable moats.
 
 **Keep it lean, watch the meter, and ship the magic.**
-
-```
-```
