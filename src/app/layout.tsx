@@ -101,7 +101,7 @@ export default function RootLayout({
               "sameAs": [
                 "https://linkedin.com/in/patrickmauboussin",
                 "https://twitter.com/patrickmauboussin",
-                "https://github.com/patrickmauboussin"
+                "https://github.com/patrickmaub"
               ],
               "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Software Engineering"]
             }
