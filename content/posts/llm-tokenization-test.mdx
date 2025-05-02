@@ -1,0 +1,111 @@
+---
+title: "Fewer Characters Don't Equal Fewer Tokens"
+date: "2023-06-23"
+tags: ["AI", "LLMs", "NLP", "Tokenization"]
+---
+
+## What I tried
+
+I wrote a small harness that feeds famous paragraphs into GPT-4 three different ways:
+
+* **Mandarin translation**  
+* **Emoji or mixed-symbol "compression"**  
+* **Caveman English gist**  
+
+The script sits here: [llm_tokenization_test](https://github.com/patrickmaub/llm_tokenization_test).  
+It loops through every paragraph, sends the text with a custom `system` prompt, grabs the model output, then counts tokens with `tiktoken`.
+
+```python
+for system in systems:
+    messages = [system, {"role": "user", "content": paragraph}]
+    converted = completion(messages, model="gpt-4")
+    count = len(enc.encode(converted))
+```
+
+## What I expected
+
+Fewer visible characters should mean fewer tokens.
+Chinese needs one glyph per word.
+Emoji can hold a whole concept inside a single icon.
+So both should beat the caveman rewrite.
+
+## What actually happened
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Style tested</div>
+    <div className="table-cell">Average token count vs English</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Caveman English</div>
+    <div className="table-cell">65 percent</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Mandarin</div>
+    <div className="table-cell">110 percent</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Emoji mix</div>
+    <div className="table-cell">125 percent</div>
+  </div>
+</div>
+
+Caveman won by a wide margin. Chinese and emoji cost more.
+
+## Why characters are not tokens
+
+### 1. GPT uses Byte Pair Encoding
+
+The tokenizer was trained on mostly English text.
+Common Latin fragments like `tion` or `polit` merge into single tokens.
+Rare Unicode symbols never merge. Each Chinese character becomes one token and many emoji expand into two.
+
+### 2. Low frequency symbols lose compression
+
+Emoji and CJK bytes rarely co-occur in the WebText corpus.
+The BPE trainer never learned longer merges for them, so they stay expensive.
+
+### 3. Emoji often triggers extra text
+
+When GPT rewrites a sentence with emoji it tends to add spaces, modifiers, or explanatory words so the meaning is not lost. Each addition introduces extra tokens.
+
+### 4. Mandarin keeps the grammar words
+
+A faithful translation still needs 的, 是, 了, and so on. Those small characters are each tokens that English caveman simply deletes.
+
+### 5. Caveman drops information-light words
+
+The caveman prompt removes articles, auxiliary verbs, relative clauses and fancy adjectives. What remains are high-value nouns and verbs that the tokenizer already packs efficiently.
+
+## Other tricks I measured
+
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Strategy</div>
+    <div className="table-cell">Effect</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">ASCII abbreviations like gov intl dept</div>
+    <div className="table-cell">saved 10 to 20 percent</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Removing quotation marks and line breaks</div>
+    <div className="table-cell">small win</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Pure symbol encoding</div>
+    <div className="table-cell">almost always larger because of token overhead</div>
+  </div>
+</div>
+
+## Takeaways
+
+When you pay by the token you want fewer **subwords**, not fewer **characters**. The safest cheapening move is to rewrite in blunt English and strip fluff. Chinese and emoji are visually dense but tokenizer unfriendly.
+
+Try the repo, swap in your own text, and watch the counter roll.
+
+```bash
+git clone https://github.com/patrickmaub/llm_tokenization_test
+python run_test.py
+```
+
