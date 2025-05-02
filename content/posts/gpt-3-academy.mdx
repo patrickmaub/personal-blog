@@ -53,15 +53,40 @@ print(resp["choices"][0]["text"].strip())
 
 ### Key Parameters
 
-| field               | plain-English effect                              |
-| ------------------- | ------------------------------------------------- |
-| `model`             | Which brain (`text-davinci-002` tops the list)    |
-| `prompt`            | Everything the model sees before it starts typing |
-| `max_tokens`        | Hard ceiling on output length                     |
-| `temperature`       | 0 = laser-focused, 1 = let it riff                |
-| `top_p`             | Alternative to `temperature` for nucleus sampling |
-| `frequency_penalty` | Penalize token repetition                         |
-| `presence_penalty`  | Encourage the model to introduce new topics       |
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Field</div>
+    <div className="table-cell">Plain-English Effect</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`model`</div>
+    <div className="table-cell">Which brain (`text-davinci-002` tops the list)</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`prompt`</div>
+    <div className="table-cell">Everything the model sees before it starts typing</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`max_tokens`</div>
+    <div className="table-cell">Hard ceiling on output length</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`temperature`</div>
+    <div className="table-cell">0 = laser-focused, 1 = let it riff</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`top_p`</div>
+    <div className="table-cell">Alternative to `temperature` for nucleus sampling</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`frequency_penalty`</div>
+    <div className="table-cell">Penalize token repetition</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">`presence_penalty`</div>
+    <div className="table-cell">Encourage the model to introduce new topics</div>
+  </div>
+</div>
 
 ---
 
@@ -141,14 +166,36 @@ One file, instant widgets, no front-end hassle—perfect for quick demos.
 
 ## 7. What GPT-3 Does Well (October 2022 Snapshot)
 
-| capability       | real-world note                                                             |
-| ---------------- | --------------------------------------------------------------------------- |
-| Summarization    | Excellent on articles under \~2 k tokens                                    |
-| Light reasoning  | Good if you guide with clear chain-of-thought cues                          |
-| Creative writing | Poems, jokes, short fiction feel human-ish                                  |
-| Translation      | Strong for high-resource languages                                          |
-| Code snippets    | Short Python functions okay; long blocks need careful prompts               |
-| Factual recall   | Mixed accuracy—add "If unsure, say 'I don't know'" to reduce hallucinations |
+<div className="table-wrapper">
+  <div className="table-row table-header">
+    <div className="table-cell">Capability</div>
+    <div className="table-cell">Real-world Note</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Summarization</div>
+    <div className="table-cell">Excellent on articles under ~2k tokens</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Light reasoning</div>
+    <div className="table-cell">Good if you guide with clear chain-of-thought cues</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Creative writing</div>
+    <div className="table-cell">Poems, jokes, short fiction feel human-ish</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Translation</div>
+    <div className="table-cell">Strong for high-resource languages</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Code snippets</div>
+    <div className="table-cell">Short Python functions okay; long blocks need careful prompts</div>
+  </div>
+  <div className="table-row">
+    <div className="table-cell">Factual recall</div>
+    <div className="table-cell">Mixed accuracy—add "If unsure, say 'I don't know'" to reduce hallucinations</div>
+  </div>
+</div>
 
 ---
 

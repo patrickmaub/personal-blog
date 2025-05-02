@@ -380,3 +380,48 @@ a:hover {
   flex: 1;
 }
 
+/* Table styles for div-based tables */
+.table-wrapper {
+  width: 100%;
+  margin: 1.5rem 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-header {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.table-cell {
+  padding: 0.75rem 1rem;
+  flex: 1;
+}
+
+.table-cell:first-child {
+  border-right: 1px solid #e5e7eb;
+  flex: 0 0 30%;
+}
+
+@media (max-width: 640px) {
+  .table-row {
+    flex-direction: column;
+  }
+  
+  .table-cell:first-child {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    flex: 1;
+  }
+}
+
