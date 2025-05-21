@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx" // or "preserve" if your setup handles JSX transformation differently for tests
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/**/*.test.ts", // Ensure test files are included
+    "src/**/*.test.tsx",
+    "jest.config.js", // Include Jest config if it's a .js file and you want TS to check it (optional)
+    "jest.setup.js" // Include Jest setup if it's a .js file (optional)
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

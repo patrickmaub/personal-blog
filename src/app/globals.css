@@ -24,17 +24,7 @@ body {
 }
 
 /* Accessibility */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
+/* .visually-hidden has been removed. Use Tailwind's `sr-only` class instead. */
 
 /* Layout styles */
 .container {
@@ -94,120 +84,21 @@ body {
 }
 
 /* Copy button styles */
-.copy-button {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  color: #9ca3af;
-  background: none;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-}
-
-.copy-button:hover {
-  color: #000;
-}
-
-.copy-button:focus {
-  outline: none;
-}
-
-.copy-icon {
-  display: inline-flex;
-}
+/* .copy-button and .copy-icon styles removed. Handled by Tailwind in CopyButton.tsx */
 
 /* Home page styles */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
+/* .section-header removed as it's not clearly used by new components or is handled internally. */
 
-.featured-section {
-  margin-bottom: 4rem;
-  position: relative;
-}
+/* .featured-section and ::after removed. Handled by Tailwind in FeaturedPostSection.tsx */
+/* .ai-posts-section removed. Handled by Tailwind in AIPostsSection.tsx */
+/* .all-posts-section removed. Handled by Tailwind in OtherPostsSection.tsx */
+/* .section-label removed. Section headers are styled directly in components. */
 
-.featured-section::after {
-  content: '';
-  position: absolute;
-  bottom: -2rem;
-  left: 0;
-  width: 2rem;
-  height: 1px;
-  background-color: #f3f4f6;
-}
-
-.ai-posts-section {
-  margin-bottom: 4rem;
-}
-
-.all-posts-section {
-  margin-bottom: 2rem;
-}
-
-.section-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #9ca3af;
-  margin-bottom: 0;
-  font-weight: 600;
-}
-
-.post-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.post-item {
-  margin-bottom: 1.5rem;
-  transition: transform 0.2s ease;
-}
-
-.post-item:hover {
-  transform: translateX(4px);
-}
-
-.post-link {
-  display: block;
-}
-
-.post-title {
-  font-size: 1.25rem;
-  font-weight: normal;
-  margin-bottom: 0.25rem;
-}
-
-.post-date {
-  font-size: 0.875rem;
-  color: #9ca3af;
-  margin-top: 0.25rem;
-}
-
-.post-tags-small {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.post-tag-small {
-  font-size: 0.75rem;
-  color: #6b7280;
-  background-color: #f9fafb;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-}
+/* .post-list, .post-item, .post-link, .post-title, .post-date, .post-tags-small, .post-tag-small removed. */
+/* These are handled by Tailwind within the new home page section components. */
 
 /* Post page styles */
+/* Styles for individual post pages (.e.g, /blog/[slug]) are retained below */
 .post-header-top {
   display: flex;
   justify-content: space-between;
@@ -405,29 +296,7 @@ a:hover {
 }
 
 /* Post item with copy button styles */
-.post-item-with-copy {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid transparent;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.post-item-with-copy:hover {
-  transform: translateX(4px);
-  border-color: #f3f4f6;
-}
-
-.post-item-with-copy .post-link {
-  flex: 1;
-  margin-right: 1rem;
-}
-
-.post-content {
-  flex: 1;
-}
+/* .post-item-with-copy and .post-content removed. Old structure, replaced by new components. */
 
 /* Table styles for div-based tables */
 .table-wrapper {
@@ -498,75 +367,46 @@ a:hover {
 }
 
 /* Search styles */
-.search-and-copy-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
+/* .search-and-copy-container, .search-container, .search-input, .search-clear-button, .copy-all-container (related) removed. */
+/* Search functionality is handled by SearchBar.tsx with Tailwind. "Copy All" button removed. */
 
-.search-container {
-  position: relative;
-  flex: 1;
-  max-width: 400px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  padding-right: 2.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  transition: border-color 0.2s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #6b7280;
-}
-
-.search-clear-button {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #9ca3af;
-  font-size: 1.25rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-}
-
-.search-clear-button:hover {
-  color: #6b7280;
-}
-
-.no-results {
-  text-align: center;
-  padding: 2rem;
-  color: #6b7280;
-  border: 1px dashed #e5e7eb;
-  border-radius: 0.375rem;
-  margin-bottom: 2rem;
-}
+/* .no-results removed. Handled by SearchBar.tsx or specific sections. */
 
 @media (max-width: 640px) {
-  .search-and-copy-container {
+  /* .search-and-copy-container media query removed as the class is gone. */
+  /* Any responsive adjustments for the new SearchBar would be within its own Tailwind classes. */
+  /* Keeping other global responsive styles below. */
+  .container { /* This is a remaining global style, so its responsive part stays */
+    padding: 2rem 1rem;
+  }
+  
+  .header {  /* This is a remaining global style, so its responsive part stays */
+    margin-bottom: 2rem;
+  }
+  
+  .post-title { /* This .post-title is for single post pages, not the home page lists */
+    font-size: 1.75rem;
+  }
+  
+  .post-header-top { /* This is for single post pages */
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 1rem;
   }
   
-  .search-container {
-    max-width: none;
+  /* .copy-button media query removed, assuming all instances use Tailwind like the refactored CopyButton.tsx */
+
+  /* Table styles responsive part */
+  .table-row {
+    flex-direction: column;
   }
   
-  .copy-all-container {
-    margin-left: 0;
-    align-self: flex-end;
+  .table-cell:first-child {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    flex: 1;
   }
 }
+/* Removed max-width: 640px specific rules for .search-and-copy-container, .search-container, .copy-all-container */
+/* as these parent classes have been removed. */
 

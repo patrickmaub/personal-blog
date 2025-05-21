@@ -1,214 +1,96 @@
 'use client';
 
-import { allPosts } from 'contentlayer/generated';
-import type { Post } from '../types/contentlayer';
-import Link from 'next/link';
-import { CopyButton } from '../components/CopyButton';
-import { useState } from 'react';
+import type { Post } from 'contentlayer/generated'; // Changed to use generated Post type
+// import { CopyButton } from '../components/CopyButton'; // CopyButton is now used within sub-components
+import { usePosts } from '@/hooks/usePosts';
+import SearchBar from '@/components/home/SearchBar';
+import FeaturedPostSection from '@/components/home/FeaturedPostSection';
+import AIPostsSection from '@/components/home/AIPostsSection';
+import OtherPostsSection from '@/components/home/OtherPostsSection';
+import Link from 'next/link'; // Keep if used in header or footer, otherwise remove if only in subcomponents
+
+// Helper function to generate content for the CopyButton
+// This function will be passed to components that use CopyButton
+const createPostContent = (post: Post): string => {
+  // Ensure summary and tags are handled if potentially undefined
+  const summary = post.summary || 'No summary available.';
+  const tags = post.tags?.join(', ') || 'No tags';
+  const date = post.formattedDate || new Date(post.date).toLocaleDateString(); // Use formattedDate if available
+
+  return `Title: ${post.title}\nDate: ${date}\nTags: ${tags}\nSummary: ${summary}\nLink: https://patrick.mauboussin.me${post.url}\n\n${post.body.raw}`;
+};
+
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Sort posts by date (newest first)
-  const sortedPosts = allPosts.sort((a: Post, b: Post) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
-
-  // Function to filter posts based on search query
-  const filterPosts = (posts: Post[]) => {
-    if (!searchQuery.trim()) return posts;
-    
-    return posts.filter(post => {
-      const searchTerms = searchQuery.toLowerCase().split(' ');
-      const title = post.title.toLowerCase();
-      const tags = post.tags?.join(' ').toLowerCase() || '';
-      const body = post.body.raw.toLowerCase();
-      
-      return searchTerms.every(term => 
-        title.includes(term) || tags.includes(term) || body.includes(term)
-      );
-    });
-  };
-
-  // Find the featured post (if any)
-  const featuredPost = sortedPosts.find((post: Post) => post.featured);
-  
-  // Track displayed post IDs to prevent duplicates
-  const displayedPostIds = new Set<string>();
-  
-  // Add featured post to displayed posts if it exists
-  if (featuredPost) {
-    displayedPostIds.add(featuredPost._id);
-  }
-
-  // Group posts by topic for better organization
-  const aiPosts = sortedPosts.filter((post: Post) => 
-    post.tags?.some(tag => 
-      ['ai', 'artificial intelligence', 'machine learning', 'ml'].includes(tag.toLowerCase())
-    )
-  );
-  
-  // Get AI posts to display (limited to 3)
-  const aiPostsToDisplay = searchQuery ? filterPosts(aiPosts) : aiPosts.slice(0, 3);
-  
-  // Add AI posts to displayed posts
-  aiPostsToDisplay.forEach(post => displayedPostIds.add(post._id));
-
-  // Get remaining posts to display
-  const remainingPosts = searchQuery 
-    ? filterPosts(sortedPosts).filter(post => !displayedPostIds.has(post._id))
-    : sortedPosts.filter(post => !displayedPostIds.has(post._id));
-
-  // Function to create content for a single post
-  const createPostContent = (post: Post) => `
-Title: ${post.title}
-Date: ${post.formattedDate}
-Tags: ${post.tags?.join(', ') || ''}
-URL: https://patrick.mauboussin.me${post.url}
-
-${post.body.raw}
-  `;
-
-  // Function to create content for all posts
-  const createAllPostsContent = () => {
-    return sortedPosts.map(post => createPostContent(post)).join('\n\n---\n\n');
-  };
-
-  // If searching and no results, show a message
-  const noResults = searchQuery && filterPosts(sortedPosts).length === 0;
+  const {
+    searchQuery,
+    setSearchQuery,
+    featuredPost,
+    aiPostsToDisplay,
+    remainingPosts,
+    noResults,
+  } = usePosts();
 
   return (
-    <>
-      {/* Hidden SEO content for Patrick Mauboussin - invisible to users but indexed by search engines */}
-      <div className="visually-hidden">
-        <h2>About Patrick Mauboussin</h2>
-        <div>
-          <p>
-            Welcome to the official blog of Patrick Mauboussin. 
-            Here you'll find Patrick Mauboussin's thoughts and insights 
-            on artificial intelligence, healthcare technology, and business strategy.
-          </p>
-          <p>
-            As a professional focused on the intersection of AI and healthcare, 
-            Patrick Mauboussin shares practical knowledge 
-            gained from years of experience in the field. 
-            Browse through the articles below or use the search function to 
-            find specific topics of interest.
-          </p>
-        </div>
-      </div>
+    // Using a div container similar to the original structure, instead of fragment, for consistent styling.
+    // The class names like "container mx-auto..." from the initial plan might be better,
+    // but sticking to minimal changes from original for now.
+    <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+      {/* Header can remain here or be moved to a Layout component if it's shared across pages */}
+      <header className="text-center mb-12">
+        <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white">My Tech Blog & Portfolio</h1>
+        <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">
+          Exploring the frontiers of AI, Web Development, and more.
+        </p>
+      </header>
 
-      <div className="search-and-copy-container">
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search posts..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-            aria-label="Search posts"
-          />
-          {searchQuery && (
-            <button 
-              onClick={() => setSearchQuery('')}
-              className="search-clear-button"
-              aria-label="Clear search"
-            >
-              ×
-            </button>
-          )}
-        </div>
-        <div className="copy-all-container">
-          <CopyButton 
-            text={createAllPostsContent()} 
-            label="Copy All Posts" 
-            tooltip="Copy content from all posts for AI tools" 
-          />
-        </div>
-      </div>
+      {/* The original search and copy-all container is replaced by the SearchBar component */}
+      {/* CopyAll button functionality is removed as per plan, individual copy buttons are in sections */}
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        noResults={noResults} // Pass noResults to SearchBar to display message
+      />
 
-      {noResults && (
-        <div className="no-results">
-          <p>No posts found matching "{searchQuery}"</p>
-        </div>
+      {/*
+        The original `noResults` div is handled by the SearchBar component.
+        The logic for displaying sections now relies on the hook's output.
+      */}
+
+      {/* Featured Post Section */}
+      {/* Show featured post if it exists AND (there's no search query OR it's part of search results) */}
+      {featuredPost && (!searchQuery || (featuredPost.title.toLowerCase().includes(searchQuery.toLowerCase()) || featuredPost.summary?.toLowerCase().includes(searchQuery.toLowerCase()))) && (
+        <FeaturedPostSection
+          post={featuredPost}
+          createPostContent={createPostContent}
+        />
       )}
 
-      {!searchQuery && featuredPost && (
-        <section className="featured-section">
-          <h2 className="section-label">Featured Post</h2>
-          <div className="post-item-with-copy">
-            <Link href={featuredPost.url} className="post-link">
-              <h3 className="post-title">
-                {featuredPost.title}
-              </h3>
-              <p className="post-date">{featuredPost.formattedDate}</p>
-            </Link>
-            <CopyButton text={createPostContent(featuredPost)} label="Copy" tooltip="Copy the full article to paste into AI" />
-          </div>
+      {/* AI Posts Section */}
+      <AIPostsSection
+        posts={aiPostsToDisplay}
+        createPostContent={createPostContent}
+        title={searchQuery ? 'Search Results in AI & Machine Learning' : 'AI Insights'}
+        emptyMessage={searchQuery ? "No AI posts match your current search." : "No AI posts currently available."}
+      />
+
+      {/* Other Posts Section */}
+      <OtherPostsSection
+        posts={remainingPosts}
+        createPostContent={createPostContent}
+        title={searchQuery ? 'Other Search Results' : 'More Posts'}
+        emptyMessage={searchQuery ? "No other posts match your current search." : "No other posts currently available."}
+      />
+
+      {/* Fallback for no posts at all when not searching */}
+      {!searchQuery && !featuredPost && aiPostsToDisplay.length === 0 && remainingPosts.length === 0 && !noResults && (
+         <section className="text-center py-12">
+          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300">No posts available at the moment.</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">Please check back later for new content!</p>
         </section>
       )}
-
-      {aiPostsToDisplay.length > 0 && (
-        <section className="ai-posts-section">
-          <h2 className="section-label">
-            {searchQuery ? 'Search Results in AI & Machine Learning' : 'AI & Machine Learning'}
-          </h2>
-          <ul className="post-list">
-            {aiPostsToDisplay.map((post: Post) => (
-              <li key={post._id} className="post-item-with-copy">
-                <Link href={post.url} className="post-link">
-                  <h3 className="post-title">
-                    {post.title}
-                  </h3>
-                  <p className="post-date">{post.formattedDate}</p>
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="post-tags-small">
-                      {post.tags.map((tag: string) => (
-                        <span key={tag} className="post-tag-small">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </Link>
-                <CopyButton text={createPostContent(post)} label="Copy" tooltip="Copy the full article to paste into AI" />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {remainingPosts.length > 0 && (
-        <section className="all-posts-section">
-          <h2 className="section-label">
-            {searchQuery ? 'Other Search Results' : 'All Posts'}
-          </h2>
-          <ul className="post-list">
-            {remainingPosts.map((post: Post) => (
-              <li key={post._id} className="post-item-with-copy">
-                <div className="post-content">
-                  <Link href={post.url} className="post-link">
-                    <h3 className="post-title">
-                      {post.title}
-                    </h3>
-                    <p className="post-date">{post.formattedDate}</p>
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="post-tags-small">
-                        {post.tags.map((tag: string) => (
-                          <span key={tag} className="post-tag-small">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </Link>
-                </div>
-                <CopyButton text={createPostContent(post)} label="Copy" tooltip="Copy the full article to paste into AI" />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </>
+      {/* The `noResults` prop in SearchBar handles "No posts found matching 'query'" when searching. */}
+      {/* The above condition handles the case where there are no posts at all, and no search is active. */}
+    </div>
   );
 }
